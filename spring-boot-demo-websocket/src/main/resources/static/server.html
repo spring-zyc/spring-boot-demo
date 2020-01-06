@@ -28,8 +28,14 @@
         <el-header>
             <el-button @click="_initSockJs" type="primary" :disabled="isConnected">手动连接</el-button>
             <el-button @click="_destroySockJs" type="danger" :disabled="!isConnected">断开连接</el-button>
+
         </el-header>
         <el-main>
+          <el-row>
+            <el-col :span="12"><el-input v-model="msg"></el-input></el-col>
+            <el-col :span="12"><el-button @click="_send" type="danger" :disabled="!isConnected">发送</el-button></el-col>
+
+          </el-row>
             <el-row :gutter="20">
                 <el-col :span="12">
                     <el-card>
@@ -131,7 +137,8 @@
                     jvm: [],
                     sys: [],
                     sysFile: []
-                }
+                },
+                msg: "测试"
             }
         },
         methods: {
@@ -173,7 +180,10 @@
                 }
                 console.log('websocket断开成功！');
                 this.$message.error('websocket断开成功！');
-            }
+            },
+          _send(){
+                this.stompClient.send("/app/change-notice", {}, this.msg)
+          }
         },
         mounted() {
             this._initSockJs();

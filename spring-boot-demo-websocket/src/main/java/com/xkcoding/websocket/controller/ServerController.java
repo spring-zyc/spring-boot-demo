@@ -4,6 +4,8 @@ import cn.hutool.core.lang.Dict;
 import com.xkcoding.websocket.model.Server;
 import com.xkcoding.websocket.payload.ServerVO;
 import com.xkcoding.websocket.util.ServerUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/server")
+@Slf4j
 public class ServerController {
 
     @GetMapping
@@ -32,5 +35,8 @@ public class ServerController {
         ServerVO serverVO = ServerUtil.wrapServerVO(server);
         return ServerUtil.wrapServerDict(serverVO);
     }
-
+  @MessageMapping("/change-notice")
+  public void greeting(String value){
+    log.info("收到的消息"+value);
+  }
 }
